@@ -1,64 +1,33 @@
-name: CI/CD Pipeline for Next.js
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  lint-test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18,23]
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Lint Code
-        run: npm run lint
-
-      - name: Run Unit Tests
-        run: npm test
-
-  build:
-    runs-on: ubuntu-latest
-    needs: lint-test
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '23'
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Next.js App
-        run: npm run build
-
-      - name: Audit Dependencies
-        run: npm audit --audit-level=moderate
-
-  docker:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Build Docker Image
-        run: docker build -t valentines-website .
+# -----------------------------
+# STAGE 1: Build the application
+# -----------------------------
+  FROM node:23-alpine AS builder
+  WORKDIR /app
+  
+  # Copy package files and install dependencies
+  COPY package*.json ./
+  # If you’re using yarn, replace the above with:
+  # COPY package.json yarn.lock ./
+  RUN npm ci
+  
+  # Copy all source files and build the Next.js app
+  COPY . .
+  RUN npm run build
+  
+  # -----------------------------
+  # STAGE 2: Production container
+  # -----------------------------
+  FROM node:23-alpine AS runner
+  WORKDIR /app
+  ENV NODE_ENV=production
+  
+  # Copy built artifacts and necessary files from the builder stage
+  COPY --from=builder /app/package*.json ./
+  COPY --from=builder /app/node_modules ./node_modules
+  COPY --from=builder /app/.next ./.next
+  COPY --from=builder /app/public ./public
+  
+  # Expose the application port and set the default command
+  EXPOSE 3000
+  CMD ["npm", "start"]
+  
