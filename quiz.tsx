@@ -6,7 +6,7 @@ import Image from "next/image"
 
 const questions = [
   {
-    question: "Möchtest du meine Valentinspartnerin sein?",
+    question: "„Meow, du bringst mich zum Meowen – hast du Lust, am Valentinstag meine +1 zu sein?“",
     options: ["Ja", "Nein"],
   },
   // Add more questions if desired
