@@ -3,8 +3,12 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'valentine',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  description: 'A special Valentines Day website for my love',
+  icons: {
+    icon: [{ url: "/favicon.svg" }, new URL("/favicon.svg", "https://yourdomain.com")],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 }
 
 export default function RootLayout({
