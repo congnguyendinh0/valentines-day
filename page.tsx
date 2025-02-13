@@ -31,11 +31,10 @@ export default function ValentinesPage() {
               className="text-center"
             >
               <h1 className="text-4xl md:text-5xl font-bold text-red-600 mb-4">
-                Fröhlichen Valentinstag, mein Schatz!
+              Fröhlichen Valentinstag, mein Schatz!
               </h1>
               <p className="text-xl md:text-2xl text-red-500 leading-relaxed">
-                Meine Liebe zu dir erblüht mit jedem Tag aufs Neue –<br />
-                wie die schönste Rose in ihrem vollen Glanz
+              Jeden Tag wächst meine Liebe zu dir – wie eine Rose, die immer schöner und strahlender wird. <br/> Du machst mein Leben reicher, und ich bin unendlich dankbar, dich an meiner Seite zu haben. ❤️
               </p>
             </motion.div>
             <div className="flex flex-col gap-6 items-center w-full">

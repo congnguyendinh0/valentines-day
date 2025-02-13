@@ -38,7 +38,7 @@ export default function Quiz() {
         className="text-center"
       >
         <h2 className="text-2xl font-bold mb-4">
-          {accepted ? "Wunderbar! Ich liebe dich!" : "Oh nein! Ich werde es weiter versuchen!"}
+          {accepted ? "Wunderbar! Ich liebe dich!" : "Oh nein! Ist mir egal. Du bist mein Date :D"}
         </h2>
         <Image
           src={
