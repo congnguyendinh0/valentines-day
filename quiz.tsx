@@ -6,7 +6,8 @@ import Image from "next/image"
 
 const questions = [
   {
-    question: "„Meow, du bringst mich zum Meowen – hast du Lust, am Valentinstag meine +1 zu sein?“",
+    question:
+      "„Meow, du bringst mich zum Meowen – hast du Lust, am Valentinstag meine +1 zu sein?“",
     options: ["Ja", "Nein"],
   },
   // Add more questions if desired
@@ -28,6 +29,21 @@ export default function Quiz() {
     }
   }
 
+  const handleBack = () => {
+    if (showResult) {
+      // If we're showing the result, go back to the last question.
+      setShowResult(false)
+      const newAnswers = answers.slice(0, answers.length - 1)
+      setAnswers(newAnswers)
+      setCurrentQuestion(questions.length - 1)
+    } else if (currentQuestion > 0) {
+      // Otherwise, if we're in the middle of the quiz, go back one question.
+      const newAnswers = answers.slice(0, answers.length - 1)
+      setAnswers(newAnswers)
+      setCurrentQuestion(currentQuestion - 1)
+    }
+  }
+
   if (showResult) {
     const accepted = answers[0] === "Ja"
     return (
@@ -38,7 +54,9 @@ export default function Quiz() {
         className="text-center"
       >
         <h2 className="text-2xl font-bold mb-4">
-          {accepted ? "Wunderbar! Ich liebe dich!" : "Oh nein! Ist mir egal. Du bist mein Date :D"}
+          {accepted
+            ? "Wunderbar! Ich liebe dich!"
+            : "Oh nein! Ist mir egal. Du bist mein Date :D"}
         </h2>
         <Image
           src={
@@ -50,6 +68,14 @@ export default function Quiz() {
           width={300}
           height={300}
         />
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="mt-4 bg-gray-500 text-white px-4 py-2 rounded"
+          onClick={handleBack}
+        >
+          Zurück
+        </motion.button>
       </motion.div>
     )
   }
@@ -61,7 +87,9 @@ export default function Quiz() {
       transition={{ duration: 0.5 }}
       className="text-center"
     >
-      <h2 className="text-2xl font-bold mb-4">{questions[currentQuestion].question}</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        {questions[currentQuestion].question}
+      </h2>
       <div className="space-x-4">
         {questions[currentQuestion].options.map((option) => (
           <motion.button
@@ -75,7 +103,17 @@ export default function Quiz() {
           </motion.button>
         ))}
       </div>
+      {/* Only show the back button if it's not the first question */}
+      {currentQuestion > 0 && (
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="mt-4 bg-gray-500 text-white px-4 py-2 rounded"
+          onClick={handleBack}
+        >
+          Zurück
+        </motion.button>
+      )}
     </motion.div>
   )
 }
-
